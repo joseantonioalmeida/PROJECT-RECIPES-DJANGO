@@ -3,16 +3,13 @@
 
     {% include 'recipes/partials/_head.html' %}
 <body>
-    <header class="main-header-container">
-        <div class="main-header container">
-            <h1>
-                <a href="/">
-                    <i class="fas fa-address-book"></i>
-                    <span>Recipes {{ name }}</span>
-                </a>
-            </h1>
-        </div>
-    </header>
+    {% include "recipes/partials/_header.html" %}
+    <div class="search-container">
+        <div class="container">
+            <form action="" class="search-form">
+                <input type="search" class="search-input" name="search" placeholder="Search">
+                <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+            </form>
 </body>
 
 </html>
