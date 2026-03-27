@@ -15,14 +15,14 @@ def index(request):
         context=context,
     )
 
-def sobre(request):
-    return render(
-        request,
-        'recipes/pages/sobre.html'
-    )
 
-def contato(request):
+def recipe(request, id):
+
+    context = {
+        'name': 'José Antonio'
+    }
     return render(
         request,
-        'recipes/pages/contato.html'
+        'recipes/pages/recipe-view.html',
+        context=context,
     )
