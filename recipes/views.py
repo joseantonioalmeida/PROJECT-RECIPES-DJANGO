@@ -11,18 +11,18 @@ def index(request):
     }
     return render(
         request,
-        'recipes/home.html',
+        'recipes/pages/home.html',
         context=context,
     )
 
 def sobre(request):
     return render(
         request,
-        'recipes/sobre.html'
+        'recipes/pages/sobre.html'
     )
 
 def contato(request):
     return render(
         request,
-        'recipes/contato.html'
+        'recipes/pages/contato.html'
     )
