@@ -1,5 +1,5 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import Http404
+from django.shortcuts import render, redirect
 from utils.recipes.factoty import make_recipe
 from recipes.models import Recipe
 
@@ -10,7 +10,6 @@ from recipes.models import Recipe
 def index(request):
     recipes = Recipe.objects.filter(is_published=True).order_by('-id')
     context = {
-        'name': 'José Antonio',
         'recipes': recipes,
     }
     return render(
@@ -24,9 +23,13 @@ def category(request, category_id):
         category__id=category_id,
         is_published=True,
         ).order_by('-id')
+    
+    if not recipes:
+        raise Http404('Not Found')
+
     context = {
-        'name': 'José Antonio',
         'recipes': recipes,
+        'title': f'{recipes.first().category.name} - Category |' #type:ignore
     }
     return render(
         request,
@@ -38,7 +41,6 @@ def category(request, category_id):
 def recipe(request, id):
 
     context = {
-        'name': 'José Antonio',
         'recipe': make_recipe(),
         'is_detail_page':True,
     }
