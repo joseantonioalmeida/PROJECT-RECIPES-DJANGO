@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_list_or_404
 from utils.recipes.factoty import make_recipe
 from recipes.models import Recipe
 
@@ -19,17 +19,15 @@ def index(request):
     )
 
 def category(request, category_id):
-    recipes = Recipe.objects.filter(
-        category__id=category_id,
-        is_published=True,
+    recipes = get_list_or_404(
+        Recipe.objects.filter(
+            category__id=category_id,
+            is_published=True,
         ).order_by('-id')
-    
-    if not recipes:
-        raise Http404('Not Found')
-
+    )
     context = {
         'recipes': recipes,
-        'title': f'{recipes.first().category.name} - Category |' #type:ignore
+        'title': f'{recipes[0].category.name} - Category |' #type:ignore
     }
     return render(
         request,
