@@ -8,9 +8,7 @@ from recipes.models import Recipe
 
 
 def index(request):
-    recipes = get_object_or_404(
-        Recipe.objects.filter(is_published=True).order_by('-id')
-    )
+    recipes = Recipe.objects.filter(is_published=True).order_by('-id')
     
     context = {
         'recipes': recipes,
