@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render, get_list_or_404
+from django.shortcuts import render, get_list_or_404, get_object_or_404
 from utils.recipes.factoty import make_recipe
 from recipes.models import Recipe
 
@@ -8,7 +8,10 @@ from recipes.models import Recipe
 
 
 def index(request):
-    recipes = Recipe.objects.filter(is_published=True).order_by('-id')
+    recipes = get_object_or_404(
+        Recipe.objects.filter(is_published=True).order_by('-id')
+    )
+    
     context = {
         'recipes': recipes,
     }
@@ -37,10 +40,11 @@ def category(request, category_id):
 
 
 def recipe(request, id):
-    recipe = Recipe.objects.filter(
+    recipe = get_object_or_404(
+        Recipe,
         is_published=True,
-        pk=id
-    ).order_by('-id').first()
+        pk=id,
+    )
 
     context = {
         'recipe': recipe,
