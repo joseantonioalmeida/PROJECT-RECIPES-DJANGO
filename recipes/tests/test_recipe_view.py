@@ -48,6 +48,14 @@ class RecipeViewsTest(TestCase):
             preparation_steps_is_html=False,
             is_published=True,
         )
+
+        response = self.client.get(reverse('recipes:home'))
+        response_content = response.content.decode('utf-8')
+        response_context_recipes = response.context['recipes']
+        self.assertIn('Recipe Title', response_content)
+        self.assertIn('10 Minutos', response_content)
+        self.assertIn('5 Porções', response_content)
+        self.assertEqual(len(response_context_recipes), 1)
         assert 1 == 1
 
     #category
