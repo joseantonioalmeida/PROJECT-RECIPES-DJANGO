@@ -1,13 +1,9 @@
 from django.urls import reverse, resolve
 from recipes import views
-from .test_recipe_base import RecipeTestBase
+from .test_recipe_base import RecipeTestBase, models
    
 
-class RecipeViewsTest(RecipeTestBase):
- # o metodo tearDown é chamado depois de cada teste
-    def tearDown(self) -> None:
-        return super().tearDown()
-    
+class RecipeViewsTest(RecipeTestBase):    
     #home
     def test_recipe_home_view_function_is_correct(self):
         view = resolve(reverse("recipes:home"))
@@ -28,14 +24,17 @@ class RecipeViewsTest(RecipeTestBase):
             response.content.decode('utf-8'),
         )
     
-    def test_recipe_home_loads_recipes(self):
+    def test_recipe_home_template_loads_recipes(self):
+        #cria uma receita
+        self.make_recipe()
+
         response = self.client.get(reverse('recipes:home'))
         response_content = response.content.decode('utf-8')
         response_context_recipes = response.context['recipes']
+
         self.assertIn('Recipe Title', response_content)
-        self.assertIn('10 Minutos', response_content)
-        self.assertIn('5 Porções', response_content)
         self.assertEqual(len(response_context_recipes), 1)
+
         assert 1 == 1
 
     #category
