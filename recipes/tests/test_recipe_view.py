@@ -37,6 +37,18 @@ class RecipeViewsTest(RecipeTestBase):
 
         assert 1 == 1
 
+    def test_recipe_home_template_dont_load_recipes_not_published(self):
+        """Test recipe is_published False dont show"""
+        #cria uma receita
+        self.make_recipe(is_published=False)
+
+        response = self.client.get(reverse('recipes:home'))
+        self.assertIn(
+            'No recipes found here',
+            response.content.decode('utf-8'),
+        )
+
+
     #category
     def test_recipe_category_view_function_is_corret(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id':1000}))
@@ -61,6 +73,18 @@ class RecipeViewsTest(RecipeTestBase):
 
         assert 1 == 1
     
+    def test_recipe_category_template_dont_load_recipes_not_published(self):
+        """Test recipe is_published False dont show"""
+        #cria uma receita
+        recipe = self.make_recipe(is_published=False)
+
+        response = self.client.get(reverse(
+            'recipes:category', 
+            kwargs={
+                'category_id':recipe.category.id})) #type:ignore
+        self.assertEqual(response.status_code, 404)
+
+    
     #recipe
     def test_recipe_recipe_view_function_is_correct(self):
         view =  resolve(reverse('recipes:recipe', kwargs={'id':1}))
@@ -84,3 +108,14 @@ class RecipeViewsTest(RecipeTestBase):
         self.assertIn(needed_title, response_content)
 
         assert 1 == 1
+
+    def test_recipe_detail_template_dont_load_recipe_not_published(self):
+        """Test recipe is_published False dont show"""
+        #cria uma receita
+        recipe = self.make_recipe(is_published=False)
+
+        response = self.client.get(reverse(
+            'recipes:recipe', 
+            kwargs={
+                'id':recipe.category.id})) #type:ignore
+        self.assertEqual(response.status_code, 404)
