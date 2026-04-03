@@ -117,5 +117,5 @@ class RecipeViewsTest(RecipeTestBase):
         response = self.client.get(reverse(
             'recipes:recipe', 
             kwargs={
-                'id':recipe.category.id})) #type:ignore
+                'id':recipe.id})) #type:ignore
         self.assertEqual(response.status_code, 404)
