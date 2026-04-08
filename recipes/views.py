@@ -54,3 +54,6 @@ def recipe(request, id):
         context=context,
 
     )
+
+def search(request):
+    ...
