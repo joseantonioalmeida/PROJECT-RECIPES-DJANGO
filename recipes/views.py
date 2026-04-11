@@ -2,6 +2,7 @@ from django.http import Http404
 from django.shortcuts import render, get_list_or_404, get_object_or_404
 from recipes.models import Recipe
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -10,8 +11,11 @@ from django.db.models import Q
 def index(request):
     recipes = Recipe.objects.filter(is_published=True).order_by('-id')
     
+    current_page = request.GET.get('page', 1)
+    paginator = Paginator(recipes, 9)
+    page_obj = paginator.get_page(current_page)
     context = {
-        'recipes': recipes,
+        'recipes': page_obj,
     }
     return render(
         request,
