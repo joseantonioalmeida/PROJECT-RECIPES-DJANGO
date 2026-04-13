@@ -2,7 +2,24 @@ from django import forms
 from django.contrib.auth.models import User
 
 
+def add_placeholder(field, placeholder_val):
+    field.widget.attrs['placeholder'] = placeholder_val
+
 class RegisterForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        add_placeholder(self.fields['first_name'], 'Ex: John')
+        add_placeholder(self.fields['last_name'], 'Ex: Doe')
+        add_placeholder(self.fields['username'], 'Ex: johndoe')
+        add_placeholder(self.fields['email'], 'Ex: johndoe@example.com')
+        add_placeholder(self.fields['password'], 'You password')
+        add_placeholder(self.fields['password2'], 'Repeat your password')
+
+
+    password2 = forms.CharField(
+        label='Confirm Password',
+        widget=forms.PasswordInput(),
+    )
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'password',
@@ -12,7 +29,7 @@ class RegisterForm(forms.ModelForm):
             'first_name': 'First Name',
             'last_name': 'Last Name',
             'username': 'Username',
-            'email': 'Emmmmail',
+            'email': 'Email',
             'password': 'Password',
         }
 
@@ -33,10 +50,4 @@ class RegisterForm(forms.ModelForm):
             'password': {
                 'required': 'Password is required.',
             },
-        }
-
-        widgets = {
-            'password': forms.PasswordInput(attrs={
-                'placeholder': 'Type your password here',
-            }),
         }
