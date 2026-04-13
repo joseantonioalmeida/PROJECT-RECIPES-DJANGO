@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 def add_placeholder(field, placeholder_val):
@@ -15,7 +16,10 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['password'], 'You password')
         add_placeholder(self.fields['password2'], 'Repeat your password')
 
-
+    password = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(),
+    )
     password2 = forms.CharField(
         label='Confirm Password',
         widget=forms.PasswordInput(),
@@ -51,3 +55,21 @@ class RegisterForm(forms.ModelForm):
                 'required': 'Password is required.',
             },
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password2 = cleaned_data.get('password2')
+
+        if password != password2:
+            password_cofirmation_error = ValidationError(
+            'Password and password confirmation do not match.',
+            code='invalid'
+        )
+            raise ValidationError({
+                'password': password_cofirmation_error,
+                'password2':[
+                    password_cofirmation_error,
+                    ValidationError('Please confirm your password.', code='required')
+                ],
+            })
