@@ -47,7 +47,6 @@ class RegisterForm(forms.ModelForm):
             'last_name': 'Last Name',
             'username': 'Username',
             'email': 'Email',
-            'password': 'Password',
         }
 
         help_texts = {

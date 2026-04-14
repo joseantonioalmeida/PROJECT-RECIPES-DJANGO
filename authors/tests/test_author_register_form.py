@@ -12,7 +12,7 @@ class AuthorRegisterFormUnitTest(TestCase):
         ('password', 'You password'),
         ('password2', 'Repeat your password')
     ])
-    def test_field_placeholders_are_correct(self, field_name, expected_placeholder):
+    def test_fields_placeholders_are_correct(self, field_name, expected_placeholder):
         form = RegisterForm()
         placeholder = form[field_name].field.widget.attrs['placeholder']
         self.assertEqual(placeholder, expected_placeholder)
@@ -26,3 +26,17 @@ class AuthorRegisterFormUnitTest(TestCase):
         form = RegisterForm()
         help_text = form[field_name].field.help_text
         self.assertEqual(help_text, expected_help_text)
+
+
+    @parameterized.expand([
+        ('first_name', 'First Name'),
+        ('last_name', 'Last Name'),
+        ('username', 'Username'),
+        ('email', 'Email'),
+        ('password', 'Password'),
+        ('password2', 'Confirm Password')
+    ])
+    def test_fields_labels(self, field_name, expected_label):
+        form = RegisterForm()
+        label = form[field_name].field.label
+        self.assertEqual(label, expected_label)
