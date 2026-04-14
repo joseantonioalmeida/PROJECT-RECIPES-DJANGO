@@ -93,3 +93,43 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         msg = 'Username must have less than 150 characters.'
         self.assertIn(msg, reponse.content.decode('utf-8'))
         self.assertIn(msg, reponse.context['form'].errors.get('username'))
+
+
+    def test_password_field_have_lower_upper_case_letters_and_numbers(self):
+        self.form_data['password'] = 'abc123'
+        url = reverse('authors:create')
+        reponse = self.client.post(url, data=self.form_data, follow=True)
+       
+        msg = ('Password must have at least one uppercase letter,'
+        'one lowercase letter, and one digit. The length should be'
+        'at least 8 characters ')
+       
+        self.assertIn(msg, reponse.content.decode('utf-8'))
+        self.assertIn(msg, reponse.context['form'].errors.get('password'))
+
+        self.form_data['password'] = 'a@@bc123456'
+        url = reverse('authors:create')
+        reponse = self.client.post(url, data=self.form_data, follow=True)
+
+        msg += 'Password and password confirmation do not match.'
+
+        self.assertNotIn(msg, reponse.context['form'].errors.get('password'))
+
+    
+    def test_password_and_password_confirmation_are_equal(self):
+        self.form_data['password'] = 'Str0ngp@ssword1'
+        self.form_data['password2'] = 'Str0ngp@ssword2'
+        url = reverse('authors:create')
+        reponse = self.client.post(url, data=self.form_data, follow=True)
+        
+        msg = 'Password and password confirmation do not match.'
+        self.assertIn(msg, reponse.content.decode('utf-8'))
+        self.assertIn(msg, reponse.context['form'].errors.get('password'))
+        
+        self.form_data['password'] = 'Str0ngp@ssword'
+        self.form_data['password2'] = 'Str0ngp@ssword'
+        url = reverse('authors:create')
+        reponse = self.client.post(url, data=self.form_data, follow=True)
+        
+        msg = 'Password and password confirmation do not match.'
+        self.assertNotIn(msg, reponse.content.decode('utf-8'))

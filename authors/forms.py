@@ -96,14 +96,14 @@ class RegisterForm(forms.ModelForm):
         password2 = cleaned_data.get('password2')
 
         if password != password2:
-            password_cofirmation_error = ValidationError(
+            password_confirmation_error = ValidationError(
             'Password and password confirmation do not match.',
             code='invalid'
         )
             raise ValidationError({
-                'password': password_cofirmation_error,
+                'password': password_confirmation_error,
                 'password2':[
-                    password_cofirmation_error,
+                    password_confirmation_error,
                     ValidationError('Please confirm your password.', code='required')
                 ],
             })
