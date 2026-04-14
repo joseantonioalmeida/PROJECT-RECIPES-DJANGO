@@ -29,6 +29,7 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['password2'], 'Repeat your password')
 
     password = forms.CharField(
+        required=True,
         label='Password',
         widget=forms.PasswordInput(),
         validators=[strong_password],
@@ -53,6 +54,9 @@ class RegisterForm(forms.ModelForm):
             'first_name': 'Enter your first name',
             'last_name': 'Enter your last name',
             'email': 'The e-mail must be valid',
+            'username': 'Enter your username',
+            'password': 'Enter your password',
+            'password2': 'Confirm your password',
         }
 
         error_messages = {
