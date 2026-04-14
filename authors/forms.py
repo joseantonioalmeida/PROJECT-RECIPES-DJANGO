@@ -28,6 +28,22 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['password'], 'You password')
         add_placeholder(self.fields['password2'], 'Repeat your password')
 
+    
+    username = forms.CharField(
+        label='Username',
+        help_text= (
+            'Username must have letters, numbers or one of those @/./+/-/_. ' 
+            'The length should be between 4 and 150 characters.'
+        ),
+        error_messages={
+            'required': 'Write your username.',
+            'min_length':'Username must have at least 4 characters.',
+            'max_length':'Username must have less than 150 characters.',
+        },
+        min_length=4,
+        max_length=150,
+    )
+
     first_name = forms.CharField(
         required=True,
         label='First Name',
@@ -72,22 +88,7 @@ class RegisterForm(forms.ModelForm):
     )
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'password',
-                  )
-
-        labels = {
-            'username': 'Username',
-        }
-
-        help_texts = {
-            'username': 'Enter your username',
-        }
-
-        error_messages = {
-            'username': {
-                'required': 'Write your username.',
-            },
-        }
+        fields = ('first_name', 'last_name', 'username', 'email', 'password')
 
     def clean(self):
         cleaned_data = super().clean() 
