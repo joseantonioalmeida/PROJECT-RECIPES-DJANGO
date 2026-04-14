@@ -16,3 +16,13 @@ class AuthorRegisterFormUnitTest(TestCase):
         form = RegisterForm()
         placeholder = form[field_name].field.widget.attrs['placeholder']
         self.assertEqual(placeholder, expected_placeholder)
+    
+    @parameterized.expand([
+        ('first_name', 'Enter your first name'),
+        ('last_name', 'Enter your last name'),
+        ('email', 'The e-mail must be valid'),
+    ])
+    def test_fields_help_text(self, field_name, expected_help_text):
+        form = RegisterForm()
+        help_text = form[field_name].field.help_text
+        self.assertEqual(help_text, expected_help_text)
