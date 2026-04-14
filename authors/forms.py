@@ -28,15 +28,47 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['password'], 'You password')
         add_placeholder(self.fields['password2'], 'Repeat your password')
 
+    first_name = forms.CharField(
+        required=True,
+        label='First Name',
+        error_messages={
+            'required': 'Write your first name.',
+        },
+        help_text='Enter your first name',
+    )
+    last_name = forms.CharField(
+        required=True,
+        label='Last Name',
+        error_messages={
+            'required': 'Write your last name.',
+        },
+        help_text='Enter your last name',
+    )
     password = forms.CharField(
         required=True,
         label='Password',
         widget=forms.PasswordInput(),
+        error_messages={
+            'required': 'Password is required.',
+            },
+        help_text='Enter your password', 
         validators=[strong_password],
     )
     password2 = forms.CharField(
         label='Confirm Password',
         widget=forms.PasswordInput(),
+        error_messages={
+            'required': 'Confirm your password.',
+            },
+        help_text='Confirm your password.',
+    )
+    email = forms.EmailField(
+        label='Email',
+        error_messages={
+            'required': 'E-mail is required.',
+            'invalid': 'Please enter a valid email address.',
+        },
+        help_text='The e-mail must be valid',
     )
     class Meta:
         model = User
@@ -44,31 +76,16 @@ class RegisterForm(forms.ModelForm):
                   )
 
         labels = {
-            'first_name': 'First Name',
-            'last_name': 'Last Name',
             'username': 'Username',
-            'email': 'Email',
         }
 
         help_texts = {
-            'first_name': 'Enter your first name',
-            'last_name': 'Enter your last name',
-            'email': 'The e-mail must be valid',
             'username': 'Enter your username',
-            'password': 'Enter your password',
-            'password2': 'Confirm your password',
         }
 
         error_messages = {
             'username': {
-                'required': 'Username is required.',
-            },
-            'email': {
-                'invalid': 'Please enter a valid email address.',
-                'required': 'Email is required.',
-            },
-            'password': {
-                'required': 'Password is required.',
+                'required': 'Write your username.',
             },
         }
 
