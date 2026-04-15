@@ -133,3 +133,9 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         
         msg = 'Password and password confirmation do not match.'
         self.assertNotIn(msg, reponse.content.decode('utf-8'))
+
+
+    def test_send_get_requests_to_registration_create_view_returns_404(self):
+        url = reverse('authors:create')
+        reponse = self.client.get(url)
+        self.assertEqual(reponse.status_code, 404)
