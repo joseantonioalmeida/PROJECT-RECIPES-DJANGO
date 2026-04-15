@@ -33,7 +33,11 @@
             <div class='form-content'>
                 <button type="submit">Create Account</button>
             </div>
-            <p class='form-footer'>Already have an account? <a href='#'>Login here</a></p>
+            {% if register_or_login == 'register' %}
+            <p class='form-footer'>Already have an account? <a href='{% url "authors:login" %}'>Login here</a></p>
+            {% elif register_or_login == 'login' %}
+            <p class='form-footer'>Don't have an account? <a href='{% url "authors:register" %}'>Register here</a></p>
+            {% endif %}
         </form>
     </div>
 </div>
