@@ -72,7 +72,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
     ])
     def test_fields_connot_be_empty(self, field, msg):
         self.form_data[field] = ''
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         reponse = self.client.post(url, data=self.form_data, follow=True)
         self.assertIn(msg, reponse.content.decode('utf-8'))
         self.assertIn(msg, reponse.context['form'].errors.get(field))
@@ -80,7 +80,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
     
     def test_username_field_min_length_should_be_4(self):
         self.form_data['username'] = 'usr'
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         reponse = self.client.post(url, data=self.form_data, follow=True)
         msg = 'Username must have at least 4 characters.'
         self.assertIn(msg, reponse.content.decode('utf-8'))
@@ -88,7 +88,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
 
     def test_username_field_max_length_should_be_150(self):
         self.form_data['username'] = 'u' * 151
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         reponse = self.client.post(url, data=self.form_data, follow=True)
         msg = 'Username must have less than 150 characters.'
         self.assertIn(msg, reponse.content.decode('utf-8'))
@@ -97,7 +97,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
 
     def test_password_field_have_lower_upper_case_letters_and_numbers(self):
         self.form_data['password'] = 'abc123'
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         reponse = self.client.post(url, data=self.form_data, follow=True)
        
         msg = ('Password must have at least one uppercase letter,'
@@ -108,7 +108,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         self.assertIn(msg, reponse.context['form'].errors.get('password'))
 
         self.form_data['password'] = 'a@@bc123456'
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         reponse = self.client.post(url, data=self.form_data, follow=True)
 
         msg += 'Password and password confirmation do not match.'
@@ -119,7 +119,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
     def test_password_and_password_confirmation_are_equal(self):
         self.form_data['password'] = 'Str0ngp@ssword1'
         self.form_data['password2'] = 'Str0ngp@ssword2'
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         reponse = self.client.post(url, data=self.form_data, follow=True)
         
         msg = 'Password and password confirmation do not match.'
@@ -128,7 +128,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         
         self.form_data['password'] = 'Str0ngp@ssword'
         self.form_data['password2'] = 'Str0ngp@ssword'
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         reponse = self.client.post(url, data=self.form_data, follow=True)
         
         msg = 'Password and password confirmation do not match.'
@@ -136,12 +136,12 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
 
 
     def test_send_get_requests_to_registration_create_view_returns_404(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         reponse = self.client.get(url)
         self.assertEqual(reponse.status_code, 404)
 
     def test_email_field_must_be_unique(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         
         self.client.post(url, data=self.form_data, follow=True)
         
@@ -154,7 +154,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
 
     
     def test_author_created_can_login(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
 
         self.form_data.update({
             'username': 'user',
