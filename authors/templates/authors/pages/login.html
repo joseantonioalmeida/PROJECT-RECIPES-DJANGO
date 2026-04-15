@@ -6,7 +6,13 @@
     <div class='main-content center container'>
         <div class='form-header'>
             <h2>Login</h2>
-            <p>Sign in to your account</p>
+            {% if request.user.is_authenticated %}
+            <p>You are logged in with 
+                {{ request.user.username }}.
+            </p>
+            {% else %}
+            <p>Sign in to your account</p>            
+            {% endif %}
         </div>
     </div>
 
