@@ -613,7 +613,6 @@ a:hover {
 
 }
 
-
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -635,64 +634,54 @@ a:hover {
     background: var(--color-gray-4);
 }
 
-.message-error {
+.error {
     border-color: var(--color-error-dark);
     background: var(--color-error-light);
     color: var(--color-error-dark);
 }
 
-.message-error::before {
+.error::before {
     background: var(--color-error-dark);
 }
 
-.message-success {
+.success {
     text-align: center;
     border-color: var(--color-success-dark);
     background: var(--color-success-light);
     color: var(--color-success-dark);
 }
 
-.message-success::before {
+.success::before {
     background: var(--color-success-dark);
 }
 
-.message-warning {
+.warning {
     border-color: var(--color-warning-dark);
     background: var(--color-warning-light);
     color: var(--color-warning-dark);
 }
 
-.message-warning::before {
+.warning::before {
     background: var(--color-warning-dark);
 }
 
-.message-alert {
-    border-color: var(--color-alert-dark);
-    background: var(--color-alert-light);
-    color: var(--color-alert-dark);
-}
-
-.message-alert::before {
-    background: var(--color-alert-dark);
-}
-
-.message-info {
+.info {
     border-color: var(--color-info-dark);
     background: var(--color-info-light);
     color: var(--color-info-dark);
 }
 
-.message-info::before {
+.info::before {
     background: var(--color-info-dark);
 }
 
-.message-debug {
+.debug {
     border-color: var(--color-debug-dark);
     background: var(--color-debug-light);
     color: var(--color-debug-dark);
 }
 
-.message-debug::before {
+.debug::before {
     background: var(--color-debug-dark);
 }
 
