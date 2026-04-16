@@ -590,6 +590,22 @@ a:hover {
     color: var(--color-primary-hover);
 }
 
+.inline-form {
+    display: inline;
+}
+
+.plaintext-button {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-weight: 600;
+    transition: all 200ms ease;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+
 /* Messages */
 .messages-container {
     display: flex;
