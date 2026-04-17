@@ -59,6 +59,20 @@ class RecipeMixin:
             is_published=is_published,
         )
 
+    def make_recipe_in_batch(self, quantity=10):
+        recipes = []
+        for i in range(quantity):
+            kwargs = {
+                'slug': f'r{i}',
+                'title': f'Recipe Title {i}',
+                'author_data': {
+                    'username': f'user-{i}',
+                    }}
+            recipe = self.make_recipe(**kwargs)
+            recipes.append(recipe)
+        return recipes
+    
+
 class RecipeTestBase(TestCase, RecipeMixin):
     # o  metodo setUp é chamado antes de cada teste
     def setUp(self) -> None:
