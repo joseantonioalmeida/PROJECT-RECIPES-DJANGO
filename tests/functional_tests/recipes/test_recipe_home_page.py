@@ -34,15 +34,48 @@ class RecipeHomePageFunctionalTest(RecipeBasePageFunctionalTest):
         search_input = self.browser.find_element(
             By.XPATH, "//input[@placeholder='Search for a recipe...']"
         )
+        old_main_content = self.browser.find_element(
+            By.CLASS_NAME, 'main-content-list'
+        )
 
         # clica nesse input e digita o termo de busca
         # "Recipe Title 1" para encontrar a receita com esse título
         search_input.send_keys(title_needed)
         search_input.send_keys(Keys.ENTER)
 
+        WebDriverWait(self.browser, 10).until(
+            EC.staleness_of(old_main_content)
+        )
+
         search_results = WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'main-content-list'))
         )
 
         self.assertIn(title_needed, search_results.text)
+
+    @patch('recipes.views.PER_PAGE', new=2)
+    def test_recipe_home_page_pagination(self):
+        #cria receitas para testar a busca
+        self.make_recipe_in_batch()
+
+        # usuário abre a página
+        self.browser.get(self.live_server_url)
+
+        # espera o link da página 2 ficar disponível
+        page2 = WebDriverWait(self.browser, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//a[@aria-label="Go to page 2"]'))
+        )
+        # clica via JavaScript para evitar elementos sticky bloquearem o clique
+        self.browser.execute_script('arguments[0].click();', page2)
+
+        # espera a página 2 estar ativa antes de verificar os resultados
+        WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located((By.XPATH, '//a[@aria-label="Current page 2"]'))
+        )
+
+        # vê que tem mais 2 receitas na página 2
+        self.assertEqual(
+            len(self.browser.find_elements(By.CLASS_NAME, 'recipe')),
+            2
+        )
         self.sleep(5)
