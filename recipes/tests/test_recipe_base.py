@@ -2,13 +2,9 @@ from django.test import TestCase
 from recipes import models
 from django.contrib.auth.models import User
 
-class RecipeTestBase(TestCase):
-    # o  metodo setUp é chamado antes de cada teste
-    def setUp(self) -> None:
-        # todos os testes terá essa receita
-        # self.make_recipe()
-        return super().setUp()
-    
+
+
+class RecipeMixin:
     def make_category(self, name='Category Test'):
         return models.Category.objects.create(name=name)
 
@@ -62,3 +58,10 @@ class RecipeTestBase(TestCase):
             preparation_steps_is_html=preparation_steps_is_html,
             is_published=is_published,
         )
+
+class RecipeTestBase(TestCase, RecipeMixin):
+    # o  metodo setUp é chamado antes de cada teste
+    def setUp(self) -> None:
+        # todos os testes terá essa receita
+        # self.make_recipe()
+        return super().setUp()

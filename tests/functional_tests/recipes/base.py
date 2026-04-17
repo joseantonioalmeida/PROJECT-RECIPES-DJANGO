@@ -1,11 +1,11 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from utils.browser import make_chrome_browser
 import time
+from recipes.tests.test_recipe_base import RecipeMixin
 
-
-class RecipeBasePageFunctionalTest(StaticLiveServerTestCase):
+class RecipeBasePageFunctionalTest(StaticLiveServerTestCase, RecipeMixin):
     def setUp(self):
-        self.browser = make_chrome_browser('--headless')
+        self.browser = make_chrome_browser()
     
     def tearDown(self) -> None:
         self.browser.quit()
