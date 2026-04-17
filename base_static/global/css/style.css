@@ -264,10 +264,10 @@ a:hover {
 
 .recipe img {
     max-width: 100%;
-    height: auto;
+    height: 200px;
+    object-fit: cover;
     display: block;
     width: 100%;
-    aspect-ratio: 768 / 1365;
 }
 
 .recipe-list-item {
@@ -783,10 +783,6 @@ a:hover {
     .main-footer {
         gap: 1rem;
         flex-direction: column;
-    }
-
-    .recipe img {
-        height: 200px;
     }
 
     .preparation-steps {
