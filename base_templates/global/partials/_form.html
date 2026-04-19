@@ -1,6 +1,6 @@
 <div class='main-content container'>
     <div class='form-container'>
-        <form action='{{ form_action }}' method="POST">
+        <form class='main-form' action='{{ form_action }}' method="POST">
             {% csrf_token %}
 
             <div class='form-content form-content-grid'>
@@ -22,7 +22,7 @@
             {% if form.errors %}
             <div class="form-content form-content-grid">
                 <div class="form-group">
-                    <div class="message message-error">
+                    <div class="message error">
                         There are errors in the form, please fix them and send again.
                     </div>
                 </div>

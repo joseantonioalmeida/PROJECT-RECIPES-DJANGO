@@ -32,7 +32,6 @@ class RegisterForm(forms.ModelForm):
     )
 
     first_name = forms.CharField(
-        required=True,
         label='First Name',
         error_messages={
             'required': 'Write your first name.',
@@ -40,7 +39,6 @@ class RegisterForm(forms.ModelForm):
         help_text='Enter your first name',
     )
     last_name = forms.CharField(
-        required=True,
         label='Last Name',
         error_messages={
             'required': 'Write your last name.',
@@ -48,7 +46,6 @@ class RegisterForm(forms.ModelForm):
         help_text='Enter your last name',
     )
     password = forms.CharField(
-        required=True,
         label='Password',
         widget=forms.PasswordInput(),
         error_messages={
