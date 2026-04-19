@@ -701,6 +701,12 @@ a:hover {
     background: var(--color-debug-dark);
 }
 
+
+/* Login */
+.login-message {
+    margin: 1.5rem 0;
+}
+
 /* Utilities */
 .center {
     text-align: center;

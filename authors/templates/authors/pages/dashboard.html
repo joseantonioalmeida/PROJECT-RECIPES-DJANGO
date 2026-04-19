@@ -1,17 +1,15 @@
 {% extends "global/base.html" %}
 
-{% block title %}Login | {% endblock title %}
+{% block title %}Dashboard | {% endblock title %}
 
 {% block content %}
     <div class='main-content center container'>
         <div class='form-header'>
-            <h2>Login</h2>
+            <h2>Dashboard {{ user}}</h2>
             {% include "authors/partials/_login_message.html" %}
         </div>
     </div>
 
     {% include "global/partials/_messages.html" %}
     
-    {% include "global/partials/_form.html" %}
-
 {% endblock content %}
