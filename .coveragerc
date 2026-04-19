@@ -1,6 +1,6 @@
 [run]
 branch = True
-omit = venv/*,**/*test*.py,manage.py
+omit = venv/*,**/*test*.py,manage.py, utils/browser.py
 # coverage run -m pytest
 # coverage run manage.py test
 # coverage html
