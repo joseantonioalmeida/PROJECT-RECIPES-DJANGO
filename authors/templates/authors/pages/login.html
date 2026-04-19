@@ -11,7 +11,8 @@
     </div>
 
     {% include "global/partials/_messages.html" %}
-    
+    {% if not user.is_authenticated %}
     {% include "global/partials/_form.html" %}
+    {% endif %}
 
 {% endblock content %}
