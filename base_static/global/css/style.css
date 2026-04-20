@@ -1817,3 +1817,49 @@ a:hover {
         grid-template-columns: 1fr;
     }
 }
+
+/* ======================== BOTÕES DE CRIAÇÃO DE RECEITA – CORREÇÃO DE COR ======================== */
+/*
+   Garantir que os botões .btn-create-recipe e .btn-create-recipe-large mantenham
+   o texto e ícone brancos em TODOS os estados (normal, hover, focus, active).
+
+   Problema: A regra genérica 'a:hover' muda a cor para laranja, conflitando com
+   os botões que herdam de <a> tag.
+
+   Solução: Usar !important para sobrescrever regras conflitantes e garantir
+   consistência visual em todos os estados de interação.
+*/
+
+/* Texto branco por padrão – garante prioridade sobre a:hover */
+.btn-create-recipe,
+.btn-create-recipe-large {
+    color: #fff !important;
+}
+
+/* Ícone interno branco por padrão */
+.btn-create-recipe i,
+.btn-create-recipe-large i {
+    color: #fff !important;
+}
+
+/* Mantém cor branca nos estados de interação (hover, focus, active) */
+.btn-create-recipe:hover,
+.btn-create-recipe:focus,
+.btn-create-recipe:active,
+.btn-create-recipe-large:hover,
+.btn-create-recipe-large:focus,
+.btn-create-recipe-large:active {
+    color: #fff !important;
+    /* Efeito visual opcional – escurece levemente o fundo para feedback visual */
+    filter: brightness(0.92);
+}
+
+/* Ícone permanece branco ao hover/focus/active */
+.btn-create-recipe:hover i,
+.btn-create-recipe:focus i,
+.btn-create-recipe:active i,
+.btn-create-recipe-large:hover i,
+.btn-create-recipe-large:focus i,
+.btn-create-recipe-large:active i {
+    color: #fff !important;
+}
