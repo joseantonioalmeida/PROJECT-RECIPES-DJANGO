@@ -1,30 +1,203 @@
 {% extends "global/base.html" %}
 
-{% block title %}Dashboard | {% endblock title %}
+{% block title %}Dashboard | Minhas Receitas{% endblock title %}
 
 {% block content %}
-    <div class='main-content center container'>
-        <div class='form-header'>
-            <h2>Dashboard {{ user}}</h2>
-            {% include "authors/partials/_login_message.html" %}
+
+<!-- ====== Messages ====== -->
+{% include "global/partials/_messages.html" %}
+
+<!-- ====== Main Content ====== -->
+<div class="main-content-container">
+    <div class="dashboard-content">
+
+        <!-- Header Section -->
+        <div class="dashboard-header-section">
+            <div class="dashboard-header-left">
+                <h2 class="dashboard-section-title">
+                    <i class="fas fa-book-open"></i> Minhas Receitas
+                </h2>
+                <p class="dashboard-subtitle">
+                    {% if recipes %}
+                        <i class="fas fa-check-circle"></i>
+                        Você tem {{ recipes.count }} receita{{ recipes.count|pluralize }}
+                    {% else %}
+                        <i class="fas fa-inbox"></i>
+                        Nenhuma receita criada ainda
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="dashboard-header-right">
+                <a href="#" class="btn-create-recipe">
+                    <i class="fas fa-plus-circle"></i> Nova Receita
+                </a>
+            </div>
         </div>
-    <div class="authors-dashboard-container">
-      <h3>Your recipes</h3>
 
-      <ul>
-        {% for recipe in recipes %}
-          <li>
-            <a href="{% url "authors:dashboard_recipe_edit" recipe.id %}">{{ recipe.title }}</a>
-          </li>
-        {% empty %}
-          <li>
-            <p>You do not have recipes, please create one.</p>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-    </div>
+        <!-- Filter Chips -->
+        {% if recipes %}
+        <div class="dashboard-filters-wrapper">
+            <div class="dashboard-filters">
+                <button class="chip active" type="button" onclick="filterByStatus(this, 'all')">
+                    <i class="fas fa-list"></i> Todas
+                </button>
+                <button class="chip" type="button" onclick="filterByStatus(this, 'published')">
+                    <i class="fas fa-check-circle"></i> Publicadas
+                </button>
+                <button class="chip" type="button" onclick="filterByStatus(this, 'draft')">
+                    <i class="fas fa-edit"></i> Rascunhos
+                </button>
+            </div>
+        </div>
+        {% endif %}
 
-    {% include "global/partials/_messages.html" %}
-    
+        <!-- Recipes Grid -->
+        {% if recipes %}
+            <div class="main-content-list">
+                {% for recipe in recipes %}
+                    <article class="recipe" data-status="{% if recipe.is_published %}published{% else %}draft{% endif %}">
+
+                        <!-- Recipe Image -->
+                        {% if recipe.cover %}
+                            <img
+                                src="{{ recipe.cover.url }}"
+                                alt="{{ recipe.title }}"
+                                class="recipe-image"
+                                loading="lazy"
+                            >
+                        {% else %}
+                            <div class="recipe-image-placeholder">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        {% endif %}
+
+                        <!-- Recipe Content -->
+                        <div class="recipe-content-wrapper">
+
+                            <!-- Title Section -->
+                            <div class="recipe-title-container">
+                                <h3 class="recipe-title">
+                                    <a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}">
+                                        {{ recipe.title }}
+                                    </a>
+                                </h3>
+                                {% if recipe.description %}
+                                    <p class="recipe-description">
+                                        {{ recipe.description|truncatewords:15 }}
+                                    </p>
+                                {% endif %}
+                            </div>
+
+                            <!-- Recipe Meta Info -->
+                            <div class="recipe-meta-container">
+                                <div class="recipe-meta">
+                                    <div class="recipe-meta-title">
+                                        <i class="fas fa-clock"></i> Preparo
+                                    </div>
+                                    <div class="recipe-meta-text">
+                                        {% if recipe.preparation_time %}
+                                            {{ recipe.preparation_time }}
+                                            {% if recipe.preparation_time_unit %}
+                                                {{ recipe.preparation_time_unit }}
+                                            {% else %}
+                                                min
+                                            {% endif %}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="recipe-meta">
+                                    <div class="recipe-meta-title">
+                                        <i class="fas fa-users"></i> Rendimento
+                                    </div>
+                                    <div class="recipe-meta-text">
+                                        {% if recipe.servings %}
+                                            {{ recipe.servings }}
+                                            {% if recipe.servings_unit %}
+                                                {{ recipe.servings_unit }}
+                                            {% else %}
+                                                porções
+                                            {% endif %}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="recipe-meta">
+                                    <div class="recipe-meta-title">
+                                        <i class="fas fa-calendar-alt"></i> Criada
+                                    </div>
+                                    <div class="recipe-meta-text">
+                                        {{ recipe.created_at|date:"d/m/y" }}
+                                    </div>
+                                </div>
+
+                                <div class="recipe-meta">
+                                    <div class="recipe-meta-title">
+                                        <i class="fas fa-flag"></i> Status
+                                    </div>
+                                    <div class="recipe-meta-text">
+                                        {% if recipe.is_published %}
+                                            <span class="status-badge status-published">Publicada</span>
+                                        {% else %}
+                                            <span class="status-badge status-draft">Rascunho</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Recipe Footer Action -->
+                        <div class="recipe-footer">
+                            <a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}" title="Editar receita">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                        </div>
+
+                    </article>
+                {% endfor %}
+            </div>
+
+        <!-- Empty State -->
+        {% else %}
+            <div class="dashboard-empty">
+                <div class="empty-icon">
+                    <i class="fas fa-inbox"></i>
+                </div>
+                <h3>Nenhuma receita criada</h3>
+                <p>Comece sua jornada culinária criando sua primeira receita incrível agora mesmo!</p>
+                <a href="{% url 'authors:dashboard' %}" class="btn-create-recipe btn-create-recipe-large">
+                    <i class="fas fa-plus-circle"></i> Criar Primeira Receita
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+    function filterByStatus(element, status) {
+        // Atualizar estado ativo
+        document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
+        element.classList.add('active');
+
+        // Filtrar receitas
+        const recipes = document.querySelectorAll('.recipe');
+        recipes.forEach(recipe => {
+            if (status === 'all') {
+                recipe.style.display = 'flex';
+            } else if (recipe.dataset.status === status) {
+                recipe.style.display = 'flex';
+            } else {
+                recipe.style.display = 'none';
+            }
+        });
+    }
+</script>
+
 {% endblock content %}

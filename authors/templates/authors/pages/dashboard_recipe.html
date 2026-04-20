@@ -1,17 +1,48 @@
 {% extends "global/base.html" %}
 
-{% block title %}Dashboard Recipe| {% endblock title %}
+{% block title %}
+    {% if form.instance.id %}Editar Receita{% else %}Nova Receita{% endif %}
+{% endblock title %}
 
 {% block content %}
-<div class='main-content center container'>
-  <div class='form-header'>
-    <h2>Dashboard recipe</h2>
-      {% include "global/partials/_messages.html" %}
-      {% include "authors/partials/_login_message.html" %}
-      
-      <div class='left'>
-        {% include "global/partials/_form.html" %}
-      </div>
-  </div>
+
+<!-- ====== Recipe Edit Hero ====== -->
+<section class="recipe-edit-hero">
+    <div class="container">
+        <div class="recipe-edit-header">
+            <div class="recipe-edit-title">
+                <a href="{% url 'authors:dashboard' %}" class="breadcrumb-link">
+                    <i class="fas fa-chevron-left"></i> Voltar
+                </a>
+                <h1>
+                    {% if form.instance.id %}
+                        <i class="fas fa-pen-fancy"></i> Editar Receita
+                    {% else %}
+                        <i class="fas fa-plus-circle"></i> Criar Receita
+                    {% endif %}
+                </h1>
+                <p>
+                    {% if form.instance.id %}
+                        Atualize os detalhes da sua receita deliciosa
+                    {% else %}
+                        Crie uma nova receita e compartilhe com o mundo
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== Messages ====== -->
+{% include "global/partials/_messages.html" %}
+
+<!-- ====== Form Container ====== -->
+<div class="main-content-container">
+    <div class="recipe-form-container">
+        <div class="recipe-form-card">
+            {% include "global/partials/_recipe_form.html" %}
+        </div>
+    </div>
 </div>
+
 {% endblock content %}

@@ -1,0 +1,191 @@
+<form method="post" enctype="multipart/form-data" class="recipe-edit-form">
+    {% csrf_token %}
+
+    <!-- ====== INFORMAÇÕES BÁSICAS ====== -->
+    <div class="form-section">
+        <h2 class="form-section-title">
+            <i class="fas fa-pencil-alt"></i> Informações Básicas
+        </h2>
+
+        <div class="form-grid full">
+            <!-- TITLE -->
+            {% for field in form %}
+                {% if field.name == 'title' %}
+                    <div class="form-content">
+                        <label for="{{ field.id_for_label }}">
+                            <i class="fas fa-heading"></i> Nome da Receita
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="help-text">{{ field.help_text|safe }}</p>{% endif %}
+                        {% if field.errors %}<div class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</div>{% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <!-- DESCRIPTION -->
+            {% for field in form %}
+                {% if field.name == 'description' %}
+                    <div class="form-content">
+                        <label for="{{ field.id_for_label }}">
+                            <i class="fas fa-comment-dots"></i> Descrição
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="help-text">{{ field.help_text|safe }}</p>{% endif %}
+                        {% if field.errors %}<div class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</div>{% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ====== DETALHES DA RECEITA ====== -->
+    <div class="form-section">
+        <h2 class="form-section-title">
+            <i class="fas fa-hourglass-half"></i> Detalhes da Receita
+        </h2>
+
+        <div class="form-grid">
+            <!-- PREPARATION TIME -->
+            {% for field in form %}
+                {% if field.name == 'preparation_time' %}
+                    <div class="form-content">
+                        <label for="{{ field.id_for_label }}">
+                            <i class="fas fa-clock"></i> Tempo de Preparo
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="help-text">{{ field.help_text|safe }}</p>{% endif %}
+                        {% if field.errors %}<div class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</div>{% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <!-- PREPARATION TIME UNIT -->
+            {% for field in form %}
+                {% if field.name == 'preparation_time_unit' %}
+                    <div class="form-content">
+                        <label for="{{ field.id_for_label }}">
+                            <i class="fas fa-hourglass-end"></i> Unidade
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="help-text">{{ field.help_text|safe }}</p>{% endif %}
+                        {% if field.errors %}<div class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</div>{% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <!-- SERVINGS -->
+            {% for field in form %}
+                {% if field.name == 'servings' %}
+                    <div class="form-content">
+                        <label for="{{ field.id_for_label }}">
+                            <i class="fas fa-utensils"></i> Rendimento
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="help-text">{{ field.help_text|safe }}</p>{% endif %}
+                        {% if field.errors %}<div class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</div>{% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <!-- SERVINGS UNIT -->
+            {% for field in form %}
+                {% if field.name == 'servings_unit' %}
+                    <div class="form-content">
+                        <label for="{{ field.id_for_label }}">
+                            <i class="fas fa-spoon"></i> Unidade
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="help-text">{{ field.help_text|safe }}</p>{% endif %}
+                        {% if field.errors %}<div class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</div>{% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ====== CAPA DA RECEITA ====== -->
+    <div class="form-section">
+        <h2 class="form-section-title">
+            <i class="fas fa-images"></i> Capa da Receita
+        </h2>
+
+        <div class="form-grid full">
+            <!-- COVER -->
+            {% for field in form %}
+                {% if field.name == 'cover' %}
+                    <div class="form-content">
+                        <label for="{{ field.id_for_label }}">
+                            <i class="fas fa-cloud-upload-alt"></i> Enviar Imagem
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="help-text">{{ field.help_text|safe }}</p>{% endif %}
+                        {% if field.errors %}<div class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</div>{% endif %}
+                    </div>
+
+                    <!-- IMAGE PREVIEW -->
+                    {% if field.value %}
+                        <div style="margin-top: 2.5rem; padding: 2.5rem; background: linear-gradient(135deg, #f8fafd 0%, #ffffff 100%); border-radius: 1.5rem; border: 2px solid var(--color-primary-light); box-shadow: 0 4px 20px rgba(255, 107, 53, 0.15);">
+                            <p style="color: var(--color-dark-text); font-size: 1.5rem; margin: 0 0 1.5rem 0; font-weight: 700;">
+                                <i class="fas fa-check-circle" style="color: var(--color-primary); margin-right: 0.8rem; font-size: 1.7rem;"></i> Imagem Atual
+                            </p>
+                            <img src="{{ field.value.url }}" alt="Capa da receita" style="max-width: 100%; max-height: 350px; border-radius: 1.2rem; box-shadow: 0 8px 30px rgba(0,0,0,0.15); display: block; border: 1px solid rgba(255, 107, 53, 0.2);">
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ====== MODO DE PREPARO ====== -->
+    <div class="form-section">
+        <h2 class="form-section-title">
+            <i class="fas fa-book-open"></i> Modo de Preparo
+        </h2>
+
+        <div class="form-grid full">
+            <!-- PREPARATION STEPS -->
+            {% for field in form %}
+                {% if field.name == 'preparation_steps' %}
+                    <div class="form-content">
+                        <label for="{{ field.id_for_label }}">
+                            <i class="fas fa-list-ol"></i> Instruções
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="help-text">{{ field.help_text|safe }}</p>{% endif %}
+                        {% if field.errors %}<div class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</div>{% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ====== ERROS GLOBAIS ====== -->
+    {% if form.non_field_errors %}
+        <div class="form-section">
+            <div class="errorlist">
+                <strong style="color: var(--color-error-dark); display: block; margin-bottom: 1rem; font-size: 1.5rem;">
+                    <i class="fas fa-exclamation-triangle"></i> Erros no Formulário
+                </strong>
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- ====== BOTÕES DE AÇÃO ====== -->
+    <div class="form-actions">
+        <button type="submit" class="btn-submit">
+            <i class="fas fa-save"></i>
+            {% if form.instance.id %}Atualizar{% else %}Criar{% endif %}
+        </button>
+        <a href="{% url 'authors:dashboard' %}" class="btn-cancel">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+        {% if form.instance.id %}
+            <button type="button" class="btn-delete">
+                <i class="fas fa-trash-alt"></i> Deletar
+            </button>
+        {% endif %}
+    </div>
+</form>
