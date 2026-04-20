@@ -29,7 +29,7 @@
             </div>
 
             <div class="dashboard-header-right">
-                <a href="#" class="btn-create-recipe">
+                <a href="{% url 'authors:dashboard_recipe_new' %}" class="btn-create-recipe">
                     <i class="fas fa-plus-circle"></i> Nova Receita
                 </a>
             </div>
@@ -171,7 +171,7 @@
                 </div>
                 <h3>Nenhuma receita criada</h3>
                 <p>Comece sua jornada culinária criando sua primeira receita incrível agora mesmo!</p>
-                <a href="{% url 'authors:dashboard' %}" class="btn-create-recipe btn-create-recipe-large">
+                <a href="{% url 'authors:dashboard_recipe_new' %}" class="btn-create-recipe btn-create-recipe-large">
                     <i class="fas fa-plus-circle"></i> Criar Primeira Receita
                 </a>
             </div>
