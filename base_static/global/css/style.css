@@ -1566,6 +1566,98 @@ a:hover {
     flex-wrap: wrap;
 }
 
+/* ==== MODAL ==== */
+.modal {
+    position: fixed;
+    inset: 0;
+    /* cobre toda a tela */
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+}
+
+.modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* caixa do modal */
+.modal-content {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-gutter-medium);
+    max-width: 42rem;
+    width: 90%;
+    box-shadow: var(--shadow-xl);
+    text-align: center;
+}
+
+/* título */
+.modal-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-dark-text);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+/* mensagem */
+.modal-message {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--color-text-secondary);
+}
+
+/* botões */
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-cancel-modal,
+.btn-confirm-modal {
+    min-width: 12rem;
+    padding: 1rem 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.btn-cancel-modal {
+    background: var(--color-gray-2);
+    color: var(--color-dark-text);
+    border: 2px solid var(--color-gray-3);
+}
+
+.btn-cancel-modal:hover {
+    background: var(--color-gray-3);
+}
+
+.btn-confirm-modal {
+    background: var(--color-error-light);
+    color: var(--color-error-dark);
+    border: 2px solid var(--color-error-dark);
+}
+
+.btn-confirm-modal:hover {
+    background: var(--color-error-dark);
+    color: var(--color-white);
+}
+
 .form-actions button,
 .form-actions a {
     display: inline-flex;

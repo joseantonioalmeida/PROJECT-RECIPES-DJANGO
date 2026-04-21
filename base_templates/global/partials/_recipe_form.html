@@ -1,3 +1,4 @@
+{% load static %}
 <form method="POST" action='{{ form_action }}' enctype="multipart/form-data" class="recipe-edit-form">
     {% csrf_token %}
 
@@ -196,3 +197,28 @@
         {% csrf_token %}
     </form>
 {% endif %}
+
+{# ---------- MODAL DE CONFIRMAÇÃO ---------- #}
+<div id="confirm-delete-modal" class="modal hidden" role="dialog"
+     aria-modal="true"
+     aria-labelledby="confirm-delete-title"
+     aria-describedby="confirm-delete-msg">
+    <div class="modal-content">
+        <h2 id="confirm-delete-title" class="modal-title">
+            <i class="fas fa-exclamation-triangle"></i> Confirmar exclusão
+        </h2>
+        <p id="confirm-delete-msg" class="modal-message">
+            Você tem certeza que deseja excluir esta receita? Esta ação não pode ser desfeita.
+        </p>
+        <div class="modal-actions">
+            <button type="button" id="modal-cancel" class="btn-cancel-modal">
+                <i class="fas fa-times"></i> Cancelar
+            </button>
+            <button type="button" id="modal-confirm" class="btn-confirm-modal">
+                <i class="fas fa-check"></i> Sim, excluir
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'global/js/scripts.js' %}"></script>
