@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import redirect, render
-from .forms import RegisterForm, LoginForm, AuthorRecipeForm
+from authors.forms import RegisterForm, LoginForm, AuthorRecipeForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -70,7 +70,7 @@ def login_create(request):
         )
 
         if authenticated_user is not None:
-            messages.success(request, 'You are logged in.')
+            messages.success(request, f'You are logged in with {authenticated_user.username}.')
             login(request, authenticated_user)
         else:            
             messages.error(request, 'Invalid credentials.')

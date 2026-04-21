@@ -3,6 +3,8 @@ import  pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 
@@ -29,10 +31,14 @@ class AuthorsLoginTest(AuthorsBaseTest):
 
         # usuário envia o formulário
         form.submit()
+        WebDriverWait(self.browser, 10).until(
+        EC.presence_of_element_located((By.ID, "django-messages"))
+        )
 
+        body_text = self.browser.find_element(By.TAG_NAME, "body").text
         self.assertIn(
             f'You are logged in with {user.username}.',
-            self.browser.find_element(By.TAG_NAME, 'body').text
+            body_text,
         )
 
     def test_login_create_raises_404_if_not_POST_method(self):
