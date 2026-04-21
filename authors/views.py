@@ -5,7 +5,6 @@ from .forms import RegisterForm, LoginForm, AuthorRecipeForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
 from recipes.models import Recipe
 
 
@@ -171,9 +170,14 @@ def dashboard_recipe_new(request):
     )
 
 
-@require_POST
 @login_required(login_url='authors:login', redirect_field_name='next')
-def dashboard_recipe_delete(request, id):
+def dashboard_recipe_delete(request,):
+    if not request.POST:
+        raise Http404()
+    
+    POST = request.POST
+    id = POST.get('id')
+    
     recipe = Recipe.objects.filter(
         is_published=False,
         author=request.user,

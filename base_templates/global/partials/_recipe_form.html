@@ -193,8 +193,9 @@
     </div>
 </form> 
 {% if form.instance.id %}
-    <form id="form-delete" method="POST" action="{% url 'authors:dashboard_recipe_delete' form.instance.id %}" style="display: none;">
+    <form id="form-delete" method="POST" action="{% url 'authors:dashboard_recipe_delete' %}" style="display: none;">
         {% csrf_token %}
+        <input type="hidden" name="id" value="{{ form.instance.id }}">
     </form>
 {% endif %}
 
