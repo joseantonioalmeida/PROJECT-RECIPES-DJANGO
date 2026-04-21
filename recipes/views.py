@@ -4,22 +4,29 @@ from recipes.models import Recipe
 from django.db.models import Q
 from utils.pagination import make_pagination
 import os
+from django.views.generic import ListView
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
-def index(request):
-    recipes = Recipe.objects.filter(is_published=True).order_by('-id')
+class RecipeListViewBase(ListView):
+    model = Recipe
+    context_object_name = 'recipes'
+    template_name = 'recipes/pages/home.html'
+    ordering = '-id'
     
-    page_obj, pagination_range = make_pagination(request,recipes,PER_PAGE)
-    context = {
-        'recipes': page_obj,
-        'pagination_range':pagination_range
-    }
-    return render(
-        request,
-        'recipes/pages/home.html',
-        context=context,
-    )
+    def get_queryset(self,*args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(is_published=True)
+        return qs
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        page_obj, pagination_range = make_pagination(
+            self.request,
+            ctx.get('recipes'), 
+            PER_PAGE
+        )
+        ctx.update({'recipes':page_obj,'pagination_range':pagination_range})
+        return ctx
 
 def category(request, category_id):
     recipes = get_list_or_404(
