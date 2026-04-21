@@ -5,8 +5,14 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from authors.forms import AuthorRecipeForm
 from django.http import Http404
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
+@method_decorator(
+    login_required(login_url='authors:login', redirect_field_name='next'),
+    name='dispatch',
+)
 class DashboardRecipe(View):
     def get_recipe(self, id=None):
         recipe = None
