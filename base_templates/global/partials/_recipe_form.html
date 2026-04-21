@@ -182,10 +182,17 @@
         <a href="{% url 'authors:dashboard' %}" class="btn-cancel">
             <i class="fas fa-times"></i> Cancelar
         </a>
-        {% if form.instance.id %}
-            <button type="button" class="btn-delete">
+
+        <!-- DELETE BUTTON --> 
+         {% if form.instance.id %}
+            <button type="submit" form="form-delete" class="btn-delete">
                 <i class="fas fa-trash-alt"></i> Deletar
             </button>
         {% endif %}
     </div>
-</form>
+</form> 
+{% if form.instance.id %}
+    <form id="form-delete" method="POST" action="{% url 'authors:dashboard_recipe_delete' form.instance.id %}" style="display: none;">
+        {% csrf_token %}
+    </form>
+{% endif %}
