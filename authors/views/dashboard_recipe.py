@@ -8,9 +8,9 @@ from django.http import Http404
 
 
 class DashboardRecipe(View):
-    def get_recipe(self, id):
+    def get_recipe(self, id=None):
         recipe = None
-        if id:
+        if id is not None:
             recipe = Recipe.objects.filter(
                 is_published=False,
                 author=self.request.user,
@@ -30,12 +30,12 @@ class DashboardRecipe(View):
             }
         )
 
-    def get(self, request, id):
+    def get(self, request, id=None):
         recipe = self.get_recipe(id)
         form = AuthorRecipeForm(instance=recipe)
         return self.render_recipe(form)
        
-    def post(self, request, id):
+    def post(self, request, id=None):
         recipe = self.get_recipe(id)
         form = AuthorRecipeForm(
             request.POST or None,
@@ -44,13 +44,16 @@ class DashboardRecipe(View):
         )
 
         if form.is_valid():
-            recipe = form.save(commit=False)
+            recipe_obj = form.save(commit=False)
 
-            recipe.author = request.user
-            recipe.is_published = False
-            recipe.preparation_steps_is_html = False
-            recipe.save()
-            messages.success(request, 'Recipe updated successfully.')
-            return redirect(reverse('authors:dashboard_recipe_edit', args=(id,)))
+            recipe_obj.author = request.user
+            recipe_obj.is_published = False
+            recipe_obj.preparation_steps_is_html = False
+            recipe_obj.save()
+            if recipe is not None:
+                messages.success(request, 'Recipe updated successfully.')
+            else:
+                messages.success(request, 'Recipe created successfully.')
+            return redirect(reverse('authors:dashboard_recipe_edit', args=(recipe_obj.id,)))
         
         return self.render_recipe(form)       
