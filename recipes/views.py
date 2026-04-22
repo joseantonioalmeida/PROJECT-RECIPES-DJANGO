@@ -27,26 +27,26 @@ class RecipeListViewBase(ListView):
         )
         ctx.update({'recipes':page_obj,'pagination_range':pagination_range})
         return ctx
+    
 
-def category(request, category_id):
-    recipes = get_list_or_404(
-        Recipe.objects.filter(
-            category__id=category_id,
-            is_published=True,
-        ).order_by('-id')
-    )
-    page_obj, pagination_range = make_pagination(request,recipes,PER_PAGE)
+class RecipeListViewHome(RecipeListViewBase):
+    template_name = 'recipes/pages/home.html'
 
-    context = {
-        'recipes': page_obj,
-        'pagination_range':pagination_range,
-        'title': f'{recipes[0].category.name} - Category |' #type:ignore
-    }
-    return render(
-        request,
-        'recipes/pages/category.html',
-        context=context,
-    )
+class RecipeListViewCategory(RecipeListViewBase):
+    template_name = 'recipes/pages/category.html'
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(
+            category__id=self.kwargs.get('category_id')
+        )
+        return qs
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        try:
+            ctx.update({'title':f'{ctx.get("recipes")[0].category.name} - Category |'}) # type:ignore
+        except IndexError:
+            ...
+        return ctx
 
 
 def recipe(request, id):
