@@ -22,12 +22,12 @@ class RecipeListViewBase(ListView):
         ctx = super().get_context_data(*args, **kwargs)
         page_obj, pagination_range = make_pagination(
             self.request,
-            ctx.get('recipes'), 
+            self.get_queryset(), 
             PER_PAGE
         )
         ctx.update({'recipes':page_obj,'pagination_range':pagination_range})
         return ctx
-    
+
 
 class RecipeListViewHome(RecipeListViewBase):
     template_name = 'recipes/pages/home.html'
@@ -47,6 +47,34 @@ class RecipeListViewCategory(RecipeListViewBase):
         except IndexError:
             ...
         return ctx
+    
+class RecipeListViewSearch(RecipeListViewBase):
+    template_name = 'recipes/pages/search.html'
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        search_term = self.request.GET.get('q', '').strip()
+
+        qs = qs.filter(
+            Q(
+                Q(title__icontains=search_term) |
+                Q(description__icontains=search_term),
+            ),
+        )
+        return qs
+    
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        search_term = self.request.GET.get('q', '').strip()
+        ctx.update(
+            {
+                'page_title':f'Search for "{search_term}" | ',
+                'search_term':search_term,
+                'additional_url_query':f'&q={search_term}',            
+            }
+        )
+        return ctx
+    
 
 
 def recipe(request, id):
@@ -65,34 +93,4 @@ def recipe(request, id):
         'recipes/pages/recipe-view.html',
         context=context,
 
-    )
-
-def search(request):
-    search_term = request.GET.get('q', '').strip()
-
-    if not search_term:
-        raise Http404()
-    
-    recipes = Recipe.objects.filter(
-        Q(
-            Q(title__icontains=search_term) |
-            Q(description__icontains=search_term),
-        ),
-        is_published=True,
-    ).order_by('-id')
-
-    page_obj, pagination_range = make_pagination(request,recipes,PER_PAGE)
-
-    
-    context = {
-        'page_title':f'Search for "{search_term}" | ',
-        'search_term':search_term,
-        'recipes':page_obj,
-        'pagination_range':pagination_range,
-        'additional_url_query':f'&q={search_term}',
-    }
-    return render(
-        request,
-        'recipes/pages/search.html',
-        context=context,
     )
