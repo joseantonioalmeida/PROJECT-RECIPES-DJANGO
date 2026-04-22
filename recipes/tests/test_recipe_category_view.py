@@ -7,7 +7,7 @@ class RecipeCategoryViewTest(RecipeTestBase):
     #category
     def test_recipe_category_view_function_is_corret(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id':1000}))
-        self.assertIs(view.func, views.category)
+        self.assertIs(view.func.view_class, views.RecipeListViewCategory)
 
     def test_recipe_category_view_returns_404_if_no_recipes_found(self):
         response = self.client.get(
@@ -23,10 +23,8 @@ class RecipeCategoryViewTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:category', kwargs={'category_id':1}))
         response_content = response.content.decode('utf-8')
         response_context_recipes = response.context['recipes']
-
         self.assertIn(needed_title, response_content)
 
-        assert 1 == 1
     
     def test_recipe_category_template_dont_load_recipes_not_published(self):
         """Test recipe is_published False dont show"""
