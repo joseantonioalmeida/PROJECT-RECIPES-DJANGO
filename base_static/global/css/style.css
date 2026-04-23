@@ -1955,3 +1955,7 @@ a:hover {
 .btn-create-recipe-large:active i {
     color: #fff !important;
 }
+
+.hidden-text {
+    display: none;
+}
