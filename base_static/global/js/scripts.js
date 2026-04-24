@@ -51,3 +51,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+(() => {
+    const buttonCloseMenu = document.querySelector('.button-close-menu');
+    const buttonShowMenu = document.querySelector('.button-show-menu');
+    const menuSidebar = document.querySelector('.menu-sidebar');
+    const menuOverlay = document.querySelector('.menu-overlay');
+
+    const menuHiddenClass = 'menu-hidden';
+
+    const closeMenu = () => {
+        menuSidebar.classList.add(menuHiddenClass);
+    };
+
+    const showMenu = () => {
+        menuSidebar.classList.remove(menuHiddenClass);
+    };
+
+    if (buttonCloseMenu) {
+        buttonCloseMenu.removeEventListener('click', closeMenu);
+        buttonCloseMenu.addEventListener('click', closeMenu);
+    }
+
+    if (buttonShowMenu) {
+        buttonShowMenu.removeEventListener('click', showMenu);
+        buttonShowMenu.addEventListener('click', showMenu);
+    }
+
+    if (menuOverlay) {
+        menuOverlay.removeEventListener('click', closeMenu);
+        menuOverlay.addEventListener('click', closeMenu);
+    }
+})();

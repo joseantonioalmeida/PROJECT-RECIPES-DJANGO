@@ -1,25 +1,57 @@
-<button class="button-show-menu button-show-menu-visible">
-    <i class="fas fa-bars"></i>
-    <span class="hidden-text">Show Menu</span>
-</button>
+<!-- Sidebar Off-Canvas -->
+<div class="menu-sidebar menu-hidden">
+    <!-- Overlay/Backdrop -->
+    <div class="menu-overlay"></div>
 
-<div class="'menu-container menu-hidden">
-    <button class="button-show-menu button-show-menu-visible">
-        <i class="fas fa-times-circle"></i>
-        <span class="hidden-text">Show Menu</span>
-    </button>
-
+    <!-- Sidebar Container -->
     <div class="menu-content">
+        <!-- Close Button -->
+        <button class="button-close-menu" aria-label="Fechar menu">
+            <i class="fas fa-times"></i>
+            <span class="hidden-text">Fechar Menu</span>
+        </button>
+
+        <!-- Navigation -->
         <nav class="menu-nav">
-            <a href="{% url 'recipes:home' %}">Home</a>
+            <!-- Home -->
+            <a href="{% url 'recipes:home' %}" class="menu-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
 
             {% if user.is_authenticated %}
-            <a href="{% url 'authors:dashboard_recipe_new' %}">New Recipe</a>
-            <a href="{% url 'authors:dashboard' %}">Dashboard</a>
-            <a href="{% url 'authors:logout' %}">Logout</a>
+            <!-- New Recipe -->
+            <a href="{% url 'authors:dashboard_recipe_new' %}" class="menu-link">
+                <i class="fas fa-plus-circle"></i>
+                <span>Nova Receita</span>
+            </a>
+
+            <!-- Dashboard -->
+            <a href="{% url 'authors:dashboard' %}" class="menu-link">
+                <i class="fas fa-chart-bar"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- Logout -->
+            <form action="{% url 'authors:logout' %}" method="POST" class="menu-logout-form">
+                {% csrf_token %}
+                <button type="submit" class="menu-link menu-link-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </button>
+            </form>
             {% else %}
-            <a href="{% url 'authors:login' %}">Login</a>
-            <a href="{% url 'authors:register' %}">Register</a>
+            <!-- Login -->
+            <a href="{% url 'authors:login' %}" class="menu-link">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Login</span>
+            </a>
+
+            <!-- Register -->
+            <a href="{% url 'authors:register' %}" class="menu-link">
+                <i class="fas fa-user-plus"></i>
+                <span>Registrar</span>
+            </a>
             {% endif %}
         </nav>
     </div>
