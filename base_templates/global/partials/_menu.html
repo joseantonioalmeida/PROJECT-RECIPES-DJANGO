@@ -35,11 +35,12 @@
             <!-- Logout -->
             <form action="{% url 'authors:logout' %}" method="POST" class="menu-logout-form">
                 {% csrf_token %}
-                <button type="submit" class="menu-link menu-link-logout">
+                <button type="submit" class="menu-link menu-link-logout authors-logout-link">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sair</span>
                 </button>
             </form>
+            {% include "authors/partials/_form_logout.html" %}
             {% else %}
             <!-- Login -->
             <a href="{% url 'authors:login' %}" class="menu-link">
