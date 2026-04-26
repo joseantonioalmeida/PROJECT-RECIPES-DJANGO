@@ -19,6 +19,8 @@ class RecipeListViewBase(ListView):
     def get_queryset(self,*args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(is_published=True)
+        qs = qs.select_related('author', 'category')
+        qs = qs.prefetch_related('tags', 'author__profile')
         return qs
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
