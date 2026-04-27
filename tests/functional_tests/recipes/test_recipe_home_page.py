@@ -53,7 +53,7 @@ class RecipeHomePageFunctionalTest(RecipeBasePageFunctionalTest):
 
         self.assertIn(title_needed, search_results.text)
 
-    @patch('recipes.views.PER_PAGE', new=2)
+    @patch('recipes.views.site.PER_PAGE', new=2)
     def test_recipe_home_page_pagination(self):
         #cria receitas para testar a busca
         self.make_recipe_in_batch()
