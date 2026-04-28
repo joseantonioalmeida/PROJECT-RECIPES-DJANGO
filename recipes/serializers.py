@@ -14,6 +14,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         method_name='any_method_name', read_only=True,
     )
     category = serializers.StringRelatedField(read_only=True)
+    author = serializers.StringRelatedField(read_only=True)
 
     def any_method_name(self, recipe):
         return f'{recipe.preparation_time} {recipe.preparation_time_unit}'
@@ -22,3 +23,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         super_validate =  super().validate(attrs)
         AuthorRecipeValidator(data=attrs, ErrorClass=serializers.ValidationError)
         return super_validate
+    
+    def save(self, **kwargs):
+        return super().save(**kwargs)
