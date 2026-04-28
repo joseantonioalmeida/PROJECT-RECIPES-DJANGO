@@ -29,7 +29,7 @@ class RecipeManager(models.Manager):
                 F('author__last_name'), Value(' ('),
                 F('author__username'), Value(')')
             )
-        )
+        ).order_by('-id').select_related('category', 'author')
 
 class Recipe(models.Model):
     def __str__(self):

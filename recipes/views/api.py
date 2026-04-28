@@ -9,7 +9,7 @@ from rest_framework import status
 
 @api_view()
 def recipe_api_list(request):
-    recipes = Recipe.objects.get_published()[:10]
+    recipes = Recipe.objects.get_published()[:20]
     serializer = RecipeSerializer(instance=recipes, many=True)
     return Response(serializer.data)
 
