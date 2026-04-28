@@ -24,11 +24,25 @@ def recipe_api_list(request):
             status=status.HTTP_201_CREATED
         )
 
-@api_view()
+@api_view(http_method_names=['GET','PATCH', 'DELETE'])
 def recipe_api_detail(request, pk):
     recipe = get_object_or_404(
         Recipe.objects.get_published(), #type:ignore
         pk=pk,
     )
-    serializer = RecipeSerializer(instance=recipe, many=False)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        serializer = RecipeSerializer(instance=recipe, many=False)
+        return Response(serializer.data)
+    
+    elif request.method == 'PATCH':
+        serializer = RecipeSerializer(
+            instance=recipe, data=request.data, 
+            many=False, partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        recipe.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
