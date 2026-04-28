@@ -1,12 +1,13 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from recipes.models import Recipe
+from authors.validators import AuthorRecipeValidator
 
 class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'description', 'public', 
-                  'preparation', 'author', 'category'
+        fields = ['id', 'title', 'description', 'public', 'preparation', 'author', 
+                  'category', 'preparation_time', 'preparation_time_unit', 'servings', 
+                  'servings_unit','preparation_steps', 'cover'
         ]
     public = serializers.BooleanField(source='is_published', read_only=True)
     preparation = serializers.SerializerMethodField(
@@ -16,3 +17,8 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def any_method_name(self, recipe):
         return f'{recipe.preparation_time} {recipe.preparation_time_unit}'
+    
+    def validate(self, attrs):
+        super_validate =  super().validate(attrs)
+        AuthorRecipeValidator(data=attrs, ErrorClass=serializers.ValidationError)
+        return super_validate
