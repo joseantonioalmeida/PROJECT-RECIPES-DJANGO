@@ -3,6 +3,9 @@ from recipes.models import Recipe
 from recipes.serializers import RecipeSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from recipes.permissions import IsOwner
+from django.shortcuts import get_object_or_404
 
 
 class RecipeAPIv2Pagination(PageNumberPagination):
@@ -12,6 +15,7 @@ class RecipeAPIv2ViewSet(ModelViewSet):
     queryset = Recipe.objects.get_published() #type:ignore
     serializer_class = RecipeSerializer
     pagination_class = RecipeAPIv2Pagination
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -19,9 +23,23 @@ class RecipeAPIv2ViewSet(ModelViewSet):
         if category_id != '' and category_id.isnumeric():
             qs = qs.filter(category_id=category_id)
         return qs
+    
+    def get_object(self):
+        obj = get_object_or_404(
+            self.get_queryset(),
+            pk=self.kwargs.get('pk', ''),
+            
+        )
+        self.check_object_permissions(self.request, obj)
+        return obj
+    
+    def get_permissions(self):
+        if self.request.method in ['PATCH', 'DELETE']:
+            return [IsOwner(),]
+        return super().get_permissions()
 
     def partial_update(self, request, *args, **kwargs):
-        recipe = self.get_queryset().filter(pk=kwargs.get('pk')).first()
+        recipe = self.get_object()
         serializer = RecipeSerializer(
             instance=recipe,
             data=request.data,
