@@ -1,23 +1,14 @@
 from rest_framework.response import Response
 from recipes.models import Recipe
 from recipes.serializers import RecipeSerializer
-from django.shortcuts import get_object_or_404
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.viewsets import ModelViewSet
 
 
 class RecipeAPIv2Pagination(PageNumberPagination):
     page_size = 2
 
-class RecipeAPIv2List(ListCreateAPIView):
-    queryset = Recipe.objects.get_published() #type:ignore
-    serializer_class = RecipeSerializer
-    pagination_class = RecipeAPIv2Pagination
-
-
-class RecipeAPIv2Detail(RetrieveUpdateDestroyAPIView):
+class RecipeAPIv2ViewSet(ModelViewSet):
     queryset = Recipe.objects.get_published() #type:ignore
     serializer_class = RecipeSerializer
     pagination_class = RecipeAPIv2Pagination
