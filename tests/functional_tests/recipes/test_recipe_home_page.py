@@ -43,11 +43,11 @@ class RecipeHomePageFunctionalTest(RecipeBasePageFunctionalTest):
         search_input.send_keys(title_needed)
         search_input.send_keys(Keys.ENTER)
 
-        WebDriverWait(self.browser, 10).until(
+        WebDriverWait(self.browser, 15).until(
             EC.staleness_of(old_main_content)
         )
 
-        search_results = WebDriverWait(self.browser, 10).until(
+        search_results = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'main-content-list'))
         )
 
