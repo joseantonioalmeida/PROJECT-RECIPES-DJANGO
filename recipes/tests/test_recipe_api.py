@@ -5,8 +5,12 @@ from unittest.mock import patch
 
 
 class RecipeAPIv2Test(test.APITestCase, RecipeMixin):
-    def get_recipe_api_list(self, reverse_result=None):
+    def get_recipe_revese_url(self, reverse_result=None):
         api_url = reverse_result or reverse('recipes:recipes-api-list')
+        return api_url
+
+    def get_recipe_api_list(self, reverse_result=None):
+        api_url = self.get_recipe_revese_url(reverse_result)
         response = self.client.get(api_url)   
         return response
     
@@ -36,7 +40,7 @@ class RecipeAPIv2Test(test.APITestCase, RecipeMixin):
         recipe1 = recipes[1]
         response = self.get_recipe_api_list()
         self.assertEqual(
-            response.data.get('results'), #type:ignore
+            len(response.data.get('results')), #type:ignore
             1
         )
 
@@ -66,4 +70,12 @@ class RecipeAPIv2Test(test.APITestCase, RecipeMixin):
         self.assertEqual(
             len(response.data.get('results')), #type:ignore
             9
+        )
+
+    def test_recipe_api_list_user_must_send_jwt_token_to_create_recipe(self):
+        api_url = self.get_recipe_revese_url()
+        response = self.client.post(api_url)
+        self.assertEqual(
+            response.status_code,
+            401
         )
